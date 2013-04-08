@@ -14,5 +14,6 @@
         <item>Walking</item>
         <item>Running</item>
     </string-array>
+    <string name="btn_start">Start</string>
 
 </resources>

@@ -10,7 +10,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,7 +33,9 @@ public class MainActivity extends Activity {
 	private TextView mTextRotVecX;
 	private TextView mTextRotVecY;
 	private TextView mTextRotVecZ;
+	private Button mButtonStart;
 	private SensorManager mSensorManager;
+	private SensorLogger mSensorLogger;
 	
 	public final static int MSG_SENSOR_UPDATE = 0;
 	
@@ -57,9 +61,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		initUIObjs();
-		initSensorLogger();
-		initActivitySpinner();
+		init();
 	}
 	
 	@Override
@@ -68,9 +70,16 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	private void init() {
+		initUIObjs();
+		initSensorLogger();
+		initActivitySpinner();
+		initStartButton();
+	}
+	
 	private void initSensorLogger() {
 		mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-		SensorLogger.getInstance(mSensorManager, mHandler).run();
+		mSensorLogger = SensorLogger.getInstance(mSensorManager, mHandler);
 	}
 	
 	private void initUIObjs() {
@@ -96,6 +105,21 @@ public class MainActivity extends Activity {
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.activities_array, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
+	}
+	
+	private void initStartButton() {
+		mButtonStart = (Button)findViewById(R.id.btn_start);
+	}
+	
+	public void onStartButtonClick(View view) {
+		if (mButtonStart.getText().equals("Start")) {
+			mButtonStart.setText("Stop");
+			mSensorLogger.start();
+		}
+		else {
+			mButtonStart.setText("Start");
+			mSensorLogger.stop();
+		}
 	}
 	
 	private void updateValues(float[] values, int type) {

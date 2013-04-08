@@ -8,18 +8,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical" >
+    <GridLayout
+        android:id="@+id/gridLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+		android:useDefaultMargins="true"
+		android:alignmentMode="alignBounds"
+		android:columnOrderPreserved="false"
+		android:columnCount="2"
+		android:rowCount="16"
+		android:orientation="horizontal" >
 
             <Button
                 android:id="@+id/btn_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Start" />
+                android:onClick="onStartButtonClick"
+                android:text="@string/btn_start" />
 
             <Spinner
                 android:id="@+id/spn_activity"
@@ -27,322 +32,186 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 tools:listitem="@android:layout/simple_spinner_dropdown_item" />
-        
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-       		<TextView
-	               android:id="@+id/acc_x_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/acc_x_label" />
-	
-	        <TextView
-	               android:id="@+id/acc_x_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-	    </LinearLayout>
-           
-		<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/acc_y_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/acc_y_label" />
-	
-	           <TextView
-	               android:id="@+id/acc_y_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
-           
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/acc_z_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/acc_z_label" />
-	
-	           <TextView
-	               android:id="@+id/acc_z_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
+
+            <TextView
+                android:id="@+id/acc_x_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+				android:text="@string/acc_x_label" />
+
+            <TextView
+                android:id="@+id/acc_x_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+				android:text="" />
+
+            <TextView
+                android:id="@+id/acc_y_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+				android:text="@string/acc_y_label" />
+
+            <TextView
+                android:id="@+id/acc_y_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+				android:text="" />
 
 
+            <TextView
+                android:id="@+id/acc_z_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+				android:text="@string/acc_z_label" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/rotvec_x_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/rotvec_x_label" />
-	
-	           <TextView
-	               android:id="@+id/rotvec_x_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
-           
-		<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/rotvec_y_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/rotvec_y_label" />
-	
-	           <TextView
-	               android:id="@+id/rotvec_y_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
-           
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/rotvec_z_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/rotvec_z_label" />
-	
-	           <TextView
-	               android:id="@+id/rotvec_z_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
-        
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/grav_x_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/grav_x_label" />
-	
-	           <TextView
-	               android:id="@+id/grav_x_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
-           
-		<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/grav_y_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/grav_y_label" />
-	
-	           <TextView
-	               android:id="@+id/grav_y_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
-           
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/grav_z_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/grav_z_label" />
-	
-	           <TextView
-	               android:id="@+id/grav_z_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
-           
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/linacc_x_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/linacc_x_label" />
-	
-	           <TextView
-	               android:id="@+id/linacc_x_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
-           
-		<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/linacc_y_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/linacc_y_label" />
-	
-	           <TextView
-	               android:id="@+id/linacc_y_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
-           
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/linacc_z_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/linacc_z_label" />
-	
-	           <TextView
-	               android:id="@+id/linacc_z_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
-        
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/gyro_x_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/gyro_x_label" />
-	
-	           <TextView
-	               android:id="@+id/gyro_x_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
-           
-		<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/gyro_y_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/gyro_y_label" />
-	
-	           <TextView
-	               android:id="@+id/gyro_y_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
-           
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            
-	           <TextView
-	               android:id="@+id/gyro_z_label"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="@string/gyro_z_label" />
-	
-	           <TextView
-	               android:id="@+id/gyro_z_value"
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:layout_weight="1"
-	               android:text="" />
-           
-        </LinearLayout>
-    </LinearLayout>
-mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
-    
+            <TextView
+                android:id="@+id/acc_z_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/rotvec_x_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rotvec_x_label" />
+
+            <TextView
+                android:id="@+id/rotvec_x_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/rotvec_y_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rotvec_y_label" />
+
+            <TextView
+                android:id="@+id/rotvec_y_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/rotvec_z_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rotvec_z_label" />
+
+            <TextView
+                android:id="@+id/rotvec_z_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/grav_x_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/grav_x_label" />
+
+            <TextView
+                android:id="@+id/grav_x_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/grav_y_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/grav_y_label" />
+
+            <TextView
+                android:id="@+id/grav_y_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/grav_z_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/grav_z_label" />
+
+            <TextView
+                android:id="@+id/grav_z_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/linacc_x_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/linacc_x_label" />
+
+            <TextView
+                android:id="@+id/linacc_x_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/linacc_y_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/linacc_y_label" />
+
+            <TextView
+                android:id="@+id/linacc_y_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+            <TextView
+                android:id="@+id/linacc_z_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/linacc_z_label" />
+
+            <TextView
+                android:id="@+id/linacc_z_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/gyro_x_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gyro_x_label" />
+
+            <TextView
+                android:id="@+id/gyro_x_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/gyro_y_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gyro_y_label" />
+
+            <TextView
+                android:id="@+id/gyro_y_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/gyro_z_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gyro_z_label" />
+
+            <TextView
+                android:id="@+id/gyro_z_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+				android:text="" />
+</GridLayout>
+
 </RelativeLayout>
