@@ -1,4 +1,4 @@
-package com.guseggert.sensorlogger;
+package com.guseggert.sensorlogger.data;
 
 public class DataPoint {
 	private int mSensorType;

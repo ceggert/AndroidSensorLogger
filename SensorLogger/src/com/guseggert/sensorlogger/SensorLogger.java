@@ -2,6 +2,8 @@ package com.guseggert.sensorlogger;
 
 import java.util.Observable;
 
+import com.guseggert.sensorlogger.data.TimeWindowMaker;
+
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;

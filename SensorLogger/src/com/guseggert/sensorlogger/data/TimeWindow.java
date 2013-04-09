@@ -1,6 +1,8 @@
-package com.guseggert.sensorlogger;
+package com.guseggert.sensorlogger.data;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import android.util.SparseArray;
 

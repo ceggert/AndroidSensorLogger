@@ -1,9 +1,6 @@
 package com.guseggert.sensorlogger;
 
-import android.annotation.SuppressLint;
 import android.hardware.Sensor;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
