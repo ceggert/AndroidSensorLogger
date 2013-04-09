@@ -56,7 +56,7 @@ public class SensorLogger extends Observable implements SensorEventListener, Run
 			Message msg = Message.obtain(mUIHandler, 0, type, 0, event.values);
 			msg.sendToTarget();
 			this.setChanged();
-			notifyObservers(msg);
+			notifyObservers(event);
 		}
 		return;
 	}
