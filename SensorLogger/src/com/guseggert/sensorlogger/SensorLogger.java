@@ -18,14 +18,14 @@ public class SensorLogger extends Observable implements SensorEventListener, Run
 	private Thread mThread;
 	private final int mDelay = SensorManager.SENSOR_DELAY_UI;
 	private TimeWindowMaker mTimeWindowMaker;
-	Handler mUIHandler = null;
+	private Handler mUIHandler = null;
 	private static SensorLogger singleton = null;
 	
 	public static SensorLogger getInstance(SensorManager sensorManager, Handler uiHandler) {
 		return singleton==null ? new SensorLogger(sensorManager, uiHandler) : singleton;
 	}
 	
-	private SensorLogger(SensorManager sensorManager, Handler uiHandler) {
+	private SensorLogger(final SensorManager sensorManager, final Handler uiHandler) {
 		mSensorManager = sensorManager;
 		mUIHandler = uiHandler;
 		mTimeWindowMaker = new TimeWindowMaker(mSensors);
@@ -74,12 +74,12 @@ public class SensorLogger extends Observable implements SensorEventListener, Run
 		initSensor(sensors);
 	}
 	
-	private void initSensor(int type) {
+	private void initSensor(final int type) {
 		mSensors.put(type, mSensorManager.getDefaultSensor(type));
 		mSensorManager.registerListener(this, mSensors.get(type), mDelay);
 	}
 	
-	private void initSensor(int[] types) {
+	private void initSensor(final int[] types) {
 		for (int type : types) {
 			initSensor(type);
 		}

@@ -10,14 +10,10 @@ import android.util.Log;
 import android.util.SparseArray;
 
 public class TimeWindowMaker implements Observer {
-	// each sensor is indexed by its type constant (e.g. Sensor.TYPE_*):
-	
 	private SparseArray<Sensor> mSensors;
 	private ArrayList<TimeWindow> mTimeWindows = new ArrayList<TimeWindow>();
-	
 	private int mTimeWindowLength = 5000; // milliseconds
 	private TimeWindow mCurrentTimeWindow = null;
-	
 	
 	public TimeWindowMaker(SparseArray<Sensor> sensors) {
 		mSensors = sensors;
@@ -55,8 +51,9 @@ public class TimeWindowMaker implements Observer {
 	// checks if the current time window is expired or null
 	private boolean needNewTimeWindow(long time) {
 		// note that the sensor timestamp is in nanoseconds
+		if (mCurrentTimeWindow == null) return true;
 		long interval = (time - mCurrentTimeWindow.getStartTime())/1000000;
-		return mCurrentTimeWindow == null || interval >= mTimeWindowLength;
+		return interval >= mTimeWindowLength;
 	}
 
 }
