@@ -22,9 +22,6 @@ public class SensorLogger extends Observable implements SensorEventListener, Run
 	
 	private TimeWindowMaker mTimeWindowMaker;
 	
-	private final int mTimeUpdateInterval = 500;
-	private long mPrevTime = 0;
-
 	Handler mUIHandler = null;
 		
 	private static SensorLogger singleton = null;
@@ -66,7 +63,8 @@ public class SensorLogger extends Observable implements SensorEventListener, Run
 				type == Sensor.TYPE_ROTATION_VECTOR) {
 				Message msg = Message.obtain(mUIHandler, 0, type, 0, event.values);
 				msg.sendToTarget();
-				notifyObservers();
+				this.setChanged();
+				notifyObservers(msg);
 		}
 		return;
 	}
