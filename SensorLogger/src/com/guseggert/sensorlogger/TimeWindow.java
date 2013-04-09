@@ -1,10 +1,12 @@
 package com.guseggert.sensorlogger;
 
+import java.util.ArrayList;
+
 import android.util.SparseArray;
 
 public class TimeWindow {
 	private long mStartTime;
-	private SparseArray<DataPoint[]> mSensorData = new SparseArray<DataPoint[]>();
+	private SparseArray<ArrayList<DataPoint>> mSensorData = new SparseArray<ArrayList<DataPoint>>();
 	private boolean empty = true;
 	
 	public TimeWindow(long time) {
@@ -25,6 +27,13 @@ public class TimeWindow {
 			empty = false;
 		}
 		DataPoint dp = new DataPoint(values, type, time);
+		
+		if (mSensorData.get(type) == null) // create the ArrayList, if needed
+			mSensorData.append(type, new ArrayList<DataPoint>());
+		
+		mSensorData.get(type).add(dp);
+		// Log.v("TimeWindow", "Added data: " + 
+		//		 mSensorData.get(type).get(mSensorData.get(type).size()-1).getValues()[0]);
 	}
 	
 	

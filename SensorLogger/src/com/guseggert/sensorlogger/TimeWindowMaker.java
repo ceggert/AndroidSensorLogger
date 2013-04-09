@@ -6,7 +6,6 @@ import java.util.Observer;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.os.Message;
 import android.util.Log;
 import android.util.SparseArray;
 
