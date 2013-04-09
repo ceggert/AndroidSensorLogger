@@ -15,6 +15,7 @@ public class TimeWindow implements Observer {
 	
 	public TimeWindow(long time, long length) {
 		mStartTime = time;
+		mLength = length;
 	}
 	
 	public void setStartTime(long t) {
@@ -43,6 +44,7 @@ public class TimeWindow implements Observer {
 	@Override
 	public void update(Observable observable, Object data) {
 		DataPoint dataPoint = (DataPoint) data;
+		long difference = dataPoint.getTimestamp() - mStartTime;
 		if (dataPoint.getTimestamp() - mStartTime >= mLength) {
 			((TimeWindowMaker)observable).onTimeWindowFinished(this);
 		}

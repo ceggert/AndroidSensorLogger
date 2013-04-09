@@ -6,6 +6,9 @@ import java.util.Observer;
 import android.hardware.SensorEvent;
 import android.util.Log;
 
+// Each time window observes TimeWindowMaker for new data points.
+// When a time window is full, it calls onTimeWindowFinished(), which
+// removes the time window as an observer and then processes the data.
 public class TimeWindowMaker extends Observable implements Observer {
 	private long mTimeWindowLength = 5000000000l; // nanoseconds
 	private float mTimeWindowOverlap = 0.5f; // overlap of time windows
