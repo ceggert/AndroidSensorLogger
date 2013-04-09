@@ -1,6 +1,5 @@
 package com.guseggert.sensorlogger;
 
-import java.util.HashMap;
 import java.util.Observable;
 
 import android.hardware.Sensor;
@@ -9,13 +8,13 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import android.util.SparseArray;
 
 public class SensorLogger extends Observable implements SensorEventListener, Runnable {
 	public static enum Command { STOP, START };
 	
 	private SensorManager mSensorManager;
-	private HashMap<Integer, Sensor> mSensors = new HashMap<Integer, Sensor>();
+	private SparseArray<Sensor> mSensors = new SparseArray<Sensor>();
 	private Thread mThread;
 	private final int mDelay = SensorManager.SENSOR_DELAY_UI;
 	private TimeWindowMaker mTimeWindowMaker;
@@ -53,7 +52,7 @@ public class SensorLogger extends Observable implements SensorEventListener, Run
 	public void onSensorChanged(final SensorEvent event) {
 		int type = event.sensor.getType();
 		
-		if (mSensors.containsKey(type)) { // if the sensor is in the sensor list
+		if (mSensors.get(type) != null) { // if the sensor is in the sensor array
 			Message msg = Message.obtain(mUIHandler, 0, type, 0, event.values);
 			msg.sendToTarget();
 			this.setChanged();
