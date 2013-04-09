@@ -6,13 +6,14 @@ import java.util.Observer;
 
 import android.util.SparseArray;
 
-public class TimeWindow {
-	private long mStartTime;
+public class TimeWindow implements Observer {
+	private long mStartTime; // nanoseconds
+	private long mLength; 
 	private SparseArray<ArrayList<DataPoint>> mSensorData = 
 			new SparseArray<ArrayList<DataPoint>>();
 	private boolean empty = true;
 	
-	public TimeWindow(long time) {
+	public TimeWindow(long time, long length) {
 		mStartTime = time;
 	}
 	
@@ -37,6 +38,14 @@ public class TimeWindow {
 		mSensorData.get(type).add(dp);
 //		Log.v("TimeWindow", "Added data: " 
 //				+ mSensorData.get(type).get(mSensorData.get(type).size()-1).getValues()[0]);
+	}
+
+	@Override
+	public void update(Observable observable, Object data) {
+		DataPoint dataPoint = (DataPoint) data;
+		if (dataPoint.getTimestamp() - mStartTime >= mLength) {
+			((TimeWindowMaker)observable).onTimeWindowFinished(this);
+		}
 	}
 	
 }

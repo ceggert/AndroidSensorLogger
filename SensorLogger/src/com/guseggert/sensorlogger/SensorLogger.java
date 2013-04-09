@@ -30,7 +30,7 @@ public class SensorLogger extends Observable implements SensorEventListener, Run
 	private SensorLogger(final SensorManager sensorManager, final Handler uiHandler) {
 		mSensorManager = sensorManager;
 		mUIHandler = uiHandler;
-		mTimeWindowMaker = new TimeWindowMaker(mSensors);
+		mTimeWindowMaker = new TimeWindowMaker();
 	}
 	
 	// This is run by the thread:
