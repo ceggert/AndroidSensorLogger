@@ -40,7 +40,8 @@ public class TimeWindowMaker implements Observer {
 			mTimeWindows.add(mCurrentTimeWindow);
 		mCurrentTimeWindow = new TimeWindow(time);
 
-		Log.v("TimeWindowMaker", "New time window issued: " + mCurrentTimeWindow.getStartTime());
+		Log.v("TimeWindowMaker", "New time window issued: " 
+				+ mCurrentTimeWindow.getStartTime());
 
 	}
 	
