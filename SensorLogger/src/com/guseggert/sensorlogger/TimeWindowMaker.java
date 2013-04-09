@@ -51,17 +51,11 @@ public class TimeWindowMaker implements Observer {
 		// Log.v("TimeWindowMaker", "Data point added: " + type + " " + time);
 	}
 	
-	// checks if the current time window is 
+	// checks if the current time window is expired or null
 	private boolean needNewTimeWindow(long time) {
-		if (mCurrentTimeWindow == null)
-			return true;
-		
 		// note that the sensor timestamp is in nanoseconds
 		long interval = (time - mCurrentTimeWindow.getStartTime())/1000000;
-		if (interval >= mTimeWindowLength)
-			return true;
-		else
-			return false;
+		return mCurrentTimeWindow == null || interval >= mTimeWindowLength;
 	}
 
 }
