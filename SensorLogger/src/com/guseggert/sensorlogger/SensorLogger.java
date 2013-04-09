@@ -16,15 +16,10 @@ public class SensorLogger extends Observable implements SensorEventListener, Run
 	
 	private SensorManager mSensorManager;
 	private HashMap<Integer, Sensor> mSensors = new HashMap<Integer, Sensor>();
-	
 	private Thread mThread;
-	
 	private final int mDelay = SensorManager.SENSOR_DELAY_UI;
-	
 	private TimeWindowMaker mTimeWindowMaker;
-	
 	Handler mUIHandler = null;
-		
 	private static SensorLogger singleton = null;
 	
 	public static SensorLogger getInstance(SensorManager sensorManager, Handler uiHandler) {
@@ -73,10 +68,10 @@ public class SensorLogger extends Observable implements SensorEventListener, Run
 	
 	private void initSensors() {
 		int[] sensors = {Sensor.TYPE_ACCELEROMETER, 
-				 		 Sensor.TYPE_GRAVITY,
-				 		 Sensor.TYPE_LINEAR_ACCELERATION,
-				 		 Sensor.TYPE_ROTATION_VECTOR,
-				 		 Sensor.TYPE_GYROSCOPE};
+						 Sensor.TYPE_GRAVITY,
+						 Sensor.TYPE_LINEAR_ACCELERATION,
+						 Sensor.TYPE_ROTATION_VECTOR,
+						 Sensor.TYPE_GYROSCOPE};
 		initSensor(sensors);
 	}
 	
