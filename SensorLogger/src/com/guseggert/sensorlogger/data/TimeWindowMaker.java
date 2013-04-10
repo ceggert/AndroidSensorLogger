@@ -1,10 +1,14 @@
 package com.guseggert.sensorlogger.data;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import android.hardware.SensorEvent;
 import android.util.Log;
+
+import com.guseggert.sensorlogger.feature.FeatureExtractor;
+import com.guseggert.sensorlogger.feature.FeatureID;
 
 // Each time window observes TimeWindowMaker for new data points.
 // When a time window is full, it calls onTimeWindowFinished(), which
@@ -13,6 +17,11 @@ public class TimeWindowMaker extends Observable implements Observer {
 	private long mTimeWindowLength = 5000000000l; // nanoseconds
 	private float mTimeWindowOverlap = 0.5f; // overlap of time windows
 	private TimeWindow mLastTimeWindow;
+	private ArrayList<Short> mFeaturesToCalculate;
+	
+	public TimeWindowMaker() {
+		setFeaturesToCalculate();
+	}
 	
 	@Override
 	public void update(Observable observable, Object data) {
@@ -51,7 +60,12 @@ public class TimeWindowMaker extends Observable implements Observer {
 	public void onTimeWindowFinished(TimeWindow timeWindow) {
 		deleteObserver(timeWindow);
 		Log.i("TimeWindowMaker", "Deleting time window: " + timeWindow.getStartTime());
+		FeatureExtractor fe = new FeatureExtractor(mFeaturesToCalculate, timeWindow.getSensorData());
 		// extract features
 		// write to csv
+	}
+	
+	private void setFeaturesToCalculate() {
+		mFeaturesToCalculate.add(FeatureID.MEAN);
 	}
 }

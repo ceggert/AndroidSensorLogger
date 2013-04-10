@@ -6,12 +6,15 @@ import java.util.Observer;
 
 import android.util.SparseArray;
 
+import com.guseggert.sensorlogger.feature.Feature;
+
 public class TimeWindow implements Observer {
 	private long mStartTime; // nanoseconds
 	private long mLength; 
 	private SparseArray<ArrayList<DataPoint>> mSensorData = 
 			new SparseArray<ArrayList<DataPoint>>();
 	private boolean empty = true;
+	private SparseArray<Feature> mFeatures = new SparseArray<Feature>();
 	
 	public TimeWindow(long time, long length) {
 		mStartTime = time;
@@ -24,6 +27,10 @@ public class TimeWindow implements Observer {
 	
 	public long getStartTime() {
 		return mStartTime;
+	}
+	
+	public SparseArray<ArrayList<DataPoint>> getSensorData() {
+		return mSensorData;
 	}
 	
 	public void addDataPoint(float[] values, int type, long time) {
