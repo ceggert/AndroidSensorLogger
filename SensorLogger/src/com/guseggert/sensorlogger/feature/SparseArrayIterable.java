@@ -53,4 +53,8 @@ public class SparseArrayIterable<T> implements Iterable<T> {
 	public int size() {
 		return mSparseArray.size();
 	}
+	
+	public int keyAt(int index) {
+		return mSparseArray.keyAt(index);
+	}
 }

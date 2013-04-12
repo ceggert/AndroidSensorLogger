@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import com.guseggert.sensorlogger.data.DataPoint;
 
 public abstract class Feature {
-	@SuppressWarnings("unused")
-	ArrayList<DataPoint> mDataPoints;
+	SparseArrayIterable<ArrayList<DataPoint>> mDataPoints;
 	
-	public Feature(ArrayList<DataPoint> dataPoints) {
+	public Feature(SparseArrayIterable<ArrayList<DataPoint>> dataPoints) {
 		mDataPoints = dataPoints;
 	}
 	

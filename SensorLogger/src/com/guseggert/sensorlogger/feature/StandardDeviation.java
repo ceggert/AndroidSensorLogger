@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.guseggert.sensorlogger.data.DataPoint;
 
 public class StandardDeviation extends Feature {
-	public StandardDeviation(ArrayList<DataPoint> dataPoints) {
+	public StandardDeviation(SparseArrayIterable<ArrayList<DataPoint>> dataPoints) {
 		super(dataPoints);
 	}
 	

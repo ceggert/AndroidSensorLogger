@@ -2,45 +2,52 @@ package com.guseggert.sensorlogger.feature;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
 import com.guseggert.sensorlogger.data.DataPoint;
 
 public class Mean extends Feature {
-	private float meanX = 0f, meanY = 0f, meanZ = 0f;
+	private SparseArrayIterable<Float[]> mMeans = new SparseArrayIterable<Float[]>();
 	
-	public Mean(ArrayList<DataPoint> dataPoints) {
+	public Mean(SparseArrayIterable<ArrayList<DataPoint>> dataPoints) {
 		super(dataPoints);
 	}
 	
 	public void compute () {
-		double sumX = 0f, sumY = 0f, sumZ = 0f;
-
-		for(DataPoint dp : mDataPoints) {
-			float values[] = dp.getValues();
-			sumX += values[0];
-			sumY += values[1];
-			sumZ += values[2];
+		// for each sensor
+		for (int i = 0; i < mDataPoints.size(); i++) {
+			int sensorType = mDataPoints.keyAt(i);
+			float[] sums = new float[]{0f, 0f, 0f};
+			
+			// for each data point of this sensor, sum up data points
+			for(DataPoint dp : mDataPoints.get(mDataPoints.keyAt(i))) {
+				float values[] = dp.getValues();
+				sums[0] += values[0];
+				sums[1] += values[1];
+				sums[2] += values[2];
+			}
+			float[] means = new float[]{0f, 0f, 0f};
+			
+			// calculate the means by dividing by size
+			for (int j = 0; j < 3; j++) 
+				means[j] = sums[j] / mDataPoints.get(mDataPoints.keyAt(i)).size();
+			
+			mMeans.append(sensorType, new Float[3]);
+			
+//			Log.v("FeatureExtractor", "Sensor: " + mDataPoints.keyAt(i) + 
+//					  " MeanX: " + means[0] + 
+//					  " MeanY: " + means[1] +
+//					  " MeanZ: " + means[2]);
 		}
-		meanX = (float) (sumX / mDataPoints.size());
-		meanY = (float) (sumY / mDataPoints.size());
-		meanZ = (float) (sumZ / mDataPoints.size());
-		
-		Log.v("FeatureExtractor", "MeanX: " + meanX + 
-				  "MeanY: " + meanY +
-				  "MeanZ: " + meanZ);
-
 	}
 	
-	public float getMeanX() {
-		return meanX;
+	public float getMeanX(int sensorType) {
+		return mMeans.get(sensorType)[0];
 	}
 	
-	public float getMeanY() {
-		return meanY;
+	public float getMeanY(int sensorType) {
+		return mMeans.get(sensorType)[1];
 	}
 	
-	public float getMeanZ() {
-		return meanZ;
+	public float getMeanZ(int sensorType) {
+		return mMeans.get(sensorType)[2];
 	}
 }

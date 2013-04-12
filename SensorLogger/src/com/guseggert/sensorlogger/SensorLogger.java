@@ -2,15 +2,16 @@ package com.guseggert.sensorlogger;
 
 import java.util.Observable;
 
-import com.guseggert.sensorlogger.data.TimeWindowMaker;
-
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.util.SparseArray;
+
+import com.guseggert.sensorlogger.data.TimeWindowMaker;
 
 public class SensorLogger extends Observable implements SensorEventListener, Runnable {
 	public static enum Command { STOP, START };
@@ -77,8 +78,12 @@ public class SensorLogger extends Observable implements SensorEventListener, Run
 	}
 	
 	private void initSensor(final int type) {
-		mSensors.put(type, mSensorManager.getDefaultSensor(type));
-		mSensorManager.registerListener(this, mSensors.get(type), mDelay);
+		Sensor sensor = mSensorManager.getDefaultSensor(type);
+		if (sensor == null) Log.e("SensorLogger", "Sensor not working: " + type);
+		else {
+			mSensors.put(type, sensor);
+			mSensorManager.registerListener(this, mSensors.get(type), mDelay);
+		}
 	}
 	
 	private void initSensor(final int[] types) {

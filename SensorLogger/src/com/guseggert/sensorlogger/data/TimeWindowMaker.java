@@ -15,9 +15,9 @@ import com.guseggert.sensorlogger.feature.FeatureID;
 // removes the time window as an observer and then processes the data.
 public class TimeWindowMaker extends Observable implements Observer {
 	private long mTimeWindowLength = 5000000000l; // nanoseconds
-	private float mTimeWindowOverlap = 0.5f; // overlap of time windows
+	private float mTimeWindowOverlap = 0.1f; // overlap of time windows
 	private TimeWindow mLastTimeWindow;
-	private ArrayList<Short> mFeaturesToCalculate;
+	private ArrayList<Short> mFeaturesToCalculate = new ArrayList<Short>();
 	
 	public TimeWindowMaker() {
 		setFeaturesToCalculate();
@@ -61,6 +61,7 @@ public class TimeWindowMaker extends Observable implements Observer {
 		deleteObserver(timeWindow);
 		Log.i("TimeWindowMaker", "Deleting time window: " + timeWindow.getStartTime());
 		FeatureExtractor fe = new FeatureExtractor(mFeaturesToCalculate, timeWindow.getSensorData());
+		fe.computeFeatures();
 		// extract features
 		// write to csv
 	}

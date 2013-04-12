@@ -23,12 +23,15 @@ public class FeatureExtractor {
 		prepareFeatures();
 		for (Feature feature : mFeatures) {
 			feature.compute();
+			Mean mean = new Mean(mData);
+			mean.compute();
+			mFeatures.append(FeatureID.MEAN, mean);
 			
-			for (ArrayList<DataPoint> dp : mData) {
-				Mean mean = new Mean(dp);
-				mean.compute();
-				mFeatures.append(FeatureID.MEAN, new Mean(dp));
-			}
+//			for (ArrayList<DataPoint> dp : mData) {
+//				Mean mean = new Mean();
+//				mean.compute();
+//				mFeatures.append(FeatureID.MEAN, new Mean(dp));
+//			}
 		}
 	}
 	
@@ -36,10 +39,10 @@ public class FeatureExtractor {
 		for (short i : mFeaturesToCalculate) {
 			switch(i) {
 			case FeatureID.MEAN:
-				mFeatures.append(i, new Mean(mData.get(i)));
+				mFeatures.append(i, new Mean(mData));
 				break;
 			case FeatureID.STDEV:
-				mFeatures.append(i, new StandardDeviation(mData.get(i)));
+				//mFeatures.append(i, new StandardDeviation(mData.get(i)));
 				break;
 			default:
 				break;

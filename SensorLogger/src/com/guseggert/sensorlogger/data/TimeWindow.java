@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.guseggert.sensorlogger.feature.Feature;
@@ -13,7 +14,7 @@ public class TimeWindow implements Observer {
 	private long mLength; 
 	private SparseArray<ArrayList<DataPoint>> mSensorData = 
 			new SparseArray<ArrayList<DataPoint>>();
-	private boolean empty = true;
+	private boolean mEmpty = true;
 	private SparseArray<Feature> mFeatures = new SparseArray<Feature>();
 	
 	public TimeWindow(long time, long length) {
@@ -33,17 +34,16 @@ public class TimeWindow implements Observer {
 		return mSensorData;
 	}
 	
-	public void addDataPoint(float[] values, int type, long time) {
-		if (empty) {
-			mStartTime = time;
-			empty = false;
+	public void addDataPoint(DataPoint dataPoint) {
+		if (mEmpty) {
+			mStartTime = dataPoint.getTimestamp();
+			mEmpty = false;
 		}
-		DataPoint dp = new DataPoint(values, type, time);
-		
+		int type = dataPoint.getSensorType();
 		if (mSensorData.get(type) == null) // create the ArrayList, if needed
 			mSensorData.append(type, new ArrayList<DataPoint>());
 		
-		mSensorData.get(type).add(dp);
+		mSensorData.get(type).add(dataPoint);
 //		Log.v("TimeWindow", "Added data: " 
 //				+ mSensorData.get(type).get(mSensorData.get(type).size()-1).getValues()[0]);
 	}
@@ -52,8 +52,11 @@ public class TimeWindow implements Observer {
 	public void update(Observable observable, Object data) {
 		DataPoint dataPoint = (DataPoint) data;
 		long difference = dataPoint.getTimestamp() - mStartTime;
-		if (dataPoint.getTimestamp() - mStartTime >= mLength) {
+		if (difference >= mLength) {
 			((TimeWindowMaker)observable).onTimeWindowFinished(this);
+		}
+		else {
+			addDataPoint(dataPoint);
 		}
 	}
 	
