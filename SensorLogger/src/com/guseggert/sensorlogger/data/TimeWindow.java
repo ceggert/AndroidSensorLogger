@@ -1,21 +1,18 @@
 package com.guseggert.sensorlogger.data;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-import android.util.Log;
-import android.util.SparseArray;
-
-import com.guseggert.sensorlogger.feature.Feature;
+import com.guseggert.sensorlogger.SensorID;
+import com.guseggert.sensorlogger.feature.FeatureSet;
 
 public class TimeWindow implements Observer {
 	private long mStartTime; // nanoseconds
 	private long mLength; 
-	private SparseArray<ArrayList<DataPoint>> mSensorData = 
-			new SparseArray<ArrayList<DataPoint>>();
-	private boolean mEmpty = true;
-	private SparseArray<Feature> mFeatures = new SparseArray<Feature>();
+	// we're using sparse arrays instead of hash tables for performance
+	private HashMap<SensorID, TimeSeries> mTimeSeries = new HashMap<SensorID, TimeSeries>();
+	private FeatureSet mFeatureSet;
 	
 	public TimeWindow(long time, long length) {
 		mStartTime = time;
@@ -30,33 +27,31 @@ public class TimeWindow implements Observer {
 		return mStartTime;
 	}
 	
-	public SparseArray<ArrayList<DataPoint>> getSensorData() {
-		return mSensorData;
+	public void addTimeSeries(SensorID id, TimeSeries timeSeries) {
+		mTimeSeries.put(id, timeSeries);
 	}
 	
-	public void addDataPoint(DataPoint dataPoint) {
-		if (mEmpty) {
-			mStartTime = dataPoint.getTimestamp();
-			mEmpty = false;
-		}
-		int type = dataPoint.getSensorType();
-		if (mSensorData.get(type) == null) // create the ArrayList, if needed
-			mSensorData.append(type, new ArrayList<DataPoint>());
-		
-		mSensorData.get(type).add(dataPoint);
-//		Log.v("TimeWindow", "Added data: " 
-//				+ mSensorData.get(type).get(mSensorData.get(type).size()-1).getValues()[0]);
+	public TimeSeries getTimeSeries(SensorID id) {
+		return mTimeSeries.get(id);
 	}
 
 	@Override
 	public void update(Observable observable, Object data) {
 		DataPoint dataPoint = (DataPoint) data;
+		SensorID sensorID = dataPoint.getSensorID();
 		long difference = dataPoint.getTimestamp() - mStartTime;
 		if (difference >= mLength) {
 			((TimeWindowMaker)observable).onTimeWindowFinished(this);
 		}
 		else {
-			addDataPoint(dataPoint);
+			// if the ts is not in the hash table, make a new one and add it
+			if (mTimeSeries.get(sensorID.ordinal()) == null) {
+				TimeSeries timeSeries = new TimeSeries();
+				timeSeries.add(dataPoint);
+			}
+			else {
+				mTimeSeries.get(sensorID.ordinal()).add(dataPoint);
+			}
 		}
 	}
 	
