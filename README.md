@@ -5,7 +5,7 @@ Logger for various sensors on Android, designed for use in physical activity rec
 
 The logger collects data from motion sensors on the phone.  At this point, it collects data from the accelerometer, the gryoscope, and then the virtual sensors of gravity, linear acceleration, and rotation vector.
 
-The logger collects this data using the concept of sliding time windows.  Each time window has a specific length (e.g. 5 seconds) during which it records data.  The time windows overlap by a specified amount (e.g. 50%).  So time windows will often contain overlapping data.  This helps with increase the accuracy of an activity recognition system during transitional periods between activities.  
+The logger collects this data using the concept of sliding time windows.  Each time window has a specific length (e.g. 5 seconds) during which it records data.  The time windows overlap by a specified amount (e.g. 50%).  So time windows will often contain overlapping data.  This helps increase the accuracy of an activity recognition system during transitional periods between activities.  
 
 Many features are extracted, such as standard statistical features (mean, standard deviation, etc.), regression lines, and some interesting new structural features (trend, magnitude of change, signed magnitude of change).
 
