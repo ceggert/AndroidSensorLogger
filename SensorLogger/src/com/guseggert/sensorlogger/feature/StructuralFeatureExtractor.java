@@ -21,15 +21,6 @@ public class StructuralFeatureExtractor extends FeatureExtractor {
 	
 	// add the computed features to the feature set
 	private void addToFeatureSet(double[] features) {
-		mFeatureSet.put(FeatureID.POLYFIT_1_0, (float)features[0]);
-		mFeatureSet.put(FeatureID.POLYFIT_1_1, (float)features[1]);
-		mFeatureSet.put(FeatureID.POLYFIT_2_0, (float)features[2]);
-		mFeatureSet.put(FeatureID.POLYFIT_2_1, (float)features[3]);
-		mFeatureSet.put(FeatureID.POLYFIT_2_2, (float)features[4]);
-		mFeatureSet.put(FeatureID.POLYFIT_3_0, (float)features[5]);
-		mFeatureSet.put(FeatureID.POLYFIT_3_1, (float)features[6]);
-		mFeatureSet.put(FeatureID.POLYFIT_3_2, (float)features[7]);
-		mFeatureSet.put(FeatureID.POLYFIT_3_3, (float)features[8]);
 	}
 	
 	/** This method computes the coefficients of the polynomial of the given degree

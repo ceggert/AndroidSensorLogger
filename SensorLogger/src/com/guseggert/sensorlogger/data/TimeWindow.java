@@ -1,18 +1,19 @@
 package com.guseggert.sensorlogger.data;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+
+import android.util.Log;
 
 import com.guseggert.sensorlogger.SensorID;
 import com.guseggert.sensorlogger.feature.FeatureSet;
 
-public class TimeWindow implements Observer {
+public class TimeWindow extends HashMap<SensorID, TimeSeries> implements Observer {
+	private static final long serialVersionUID = 4834473217118341864L;
 	private long mStartTime; // nanoseconds
 	private long mLength; 
-	// we're using sparse arrays instead of hash tables for performance
-	private HashMap<SensorID, TimeSeries> mTimeSeries = new HashMap<SensorID, TimeSeries>();
-	private FeatureSet mFeatureSet;
 	
 	public TimeWindow(long time, long length) {
 		mStartTime = time;
@@ -26,14 +27,6 @@ public class TimeWindow implements Observer {
 	public long getStartTime() {
 		return mStartTime;
 	}
-	
-	public void addTimeSeries(SensorID id, TimeSeries timeSeries) {
-		mTimeSeries.put(id, timeSeries);
-	}
-	
-	public TimeSeries getTimeSeries(SensorID id) {
-		return mTimeSeries.get(id);
-	}
 
 	@Override
 	public void update(Observable observable, Object data) {
@@ -45,12 +38,23 @@ public class TimeWindow implements Observer {
 		}
 		else {
 			// if the ts is not in the hash table, make a new one and add it
-			if (mTimeSeries.get(sensorID.ordinal()) == null) {
+			if (this.get(sensorID.ordinal()) == null) {
 				TimeSeries timeSeries = new TimeSeries();
 				timeSeries.add(dataPoint);
+				this.put(sensorID, timeSeries);
 			}
 			else {
-				mTimeSeries.get(sensorID.ordinal()).add(dataPoint);
+				this.get(sensorID.ordinal()).add(dataPoint);
+			}
+		}
+	}
+	
+	public void logContents() {
+		for (Map.Entry<SensorID, TimeSeries> tw : this.entrySet()) {
+			TimeSeries timeSeries = tw.getValue();
+			for (DataPoint dp : timeSeries) {
+				Log.v("TimeWindow", "Value: " + dp.getValue() + " Sensor: " + dp.getSensorID() +
+						" Time: " + dp.getTimestamp());
 			}
 		}
 	}

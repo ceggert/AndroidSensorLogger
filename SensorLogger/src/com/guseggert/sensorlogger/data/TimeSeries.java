@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.guseggert.sensorlogger.SensorID;
-
 public class TimeSeries extends ArrayList <DataPoint> {	
 
 	private static final long serialVersionUID = 7631932145097190500L;

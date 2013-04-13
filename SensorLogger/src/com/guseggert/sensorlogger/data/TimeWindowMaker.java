@@ -1,5 +1,7 @@
 package com.guseggert.sensorlogger.data;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -8,6 +10,7 @@ import android.hardware.SensorEvent;
 import android.util.Log;
 
 import com.guseggert.sensorlogger.SensorID;
+import com.guseggert.sensorlogger.feature.FeatureID;
 import com.guseggert.sensorlogger.feature.FeatureSet;
 
 // Each time window observes TimeWindowMaker for new data points.
@@ -48,32 +51,42 @@ public class TimeWindowMaker extends Observable implements Observer {
 		case Sensor.TYPE_ACCELEROMETER:
 			this.setChanged();
 			notifyObservers(new DataPoint(values[0], SensorID.ACC_X, time));
+			this.setChanged();
 			notifyObservers(new DataPoint(values[1], SensorID.ACC_Y, time));
+			this.setChanged();
 			notifyObservers(new DataPoint(values[2], SensorID.ACC_Z, time));
 			break;
 		case Sensor.TYPE_GYROSCOPE:
 			this.setChanged();
 			notifyObservers(new DataPoint(values[0], SensorID.GYRO_X, time));
+			this.setChanged();
 			notifyObservers(new DataPoint(values[1], SensorID.GYRO_Y, time));
+			this.setChanged();
 			notifyObservers(new DataPoint(values[2], SensorID.GYRO_Z, time));
 			break;
 		case Sensor.TYPE_GRAVITY:
 			this.setChanged();
 			notifyObservers(new DataPoint(values[0], SensorID.GRAV_X, time));
-			notifyObservers(new DataPoint(values[1], SensorID.GRAV_X, time));
-			notifyObservers(new DataPoint(values[2], SensorID.GRAV_X, time));
+			this.setChanged();
+			notifyObservers(new DataPoint(values[1], SensorID.GRAV_Y, time));
+			this.setChanged();
+			notifyObservers(new DataPoint(values[2], SensorID.GRAV_Z, time));
 			break;
 		case Sensor.TYPE_LINEAR_ACCELERATION:
 			this.setChanged();
 			notifyObservers(new DataPoint(values[0], SensorID.LINACC_X, time));
-			notifyObservers(new DataPoint(values[1], SensorID.LINACC_X, time));
-			notifyObservers(new DataPoint(values[2], SensorID.LINACC_X, time));
+			this.setChanged();
+			notifyObservers(new DataPoint(values[1], SensorID.LINACC_Y, time));
+			this.setChanged();
+			notifyObservers(new DataPoint(values[2], SensorID.LINACC_Z, time));
 			break;
 		case Sensor.TYPE_ROTATION_VECTOR:
 			this.setChanged();
 			notifyObservers(new DataPoint(values[0], SensorID.ROTVEC_X, time));
-			notifyObservers(new DataPoint(values[1], SensorID.ROTVEC_X, time));
-			notifyObservers(new DataPoint(values[2], SensorID.ROTVEC_X, time));
+			this.setChanged();
+			notifyObservers(new DataPoint(values[1], SensorID.ROTVEC_Y, time));
+			this.setChanged();
+			notifyObservers(new DataPoint(values[2], SensorID.ROTVEC_Z, time));
 			break;
 		default:
 			throw new IllegalArgumentException("addPoint received an invalid sensor type");
@@ -92,9 +105,13 @@ public class TimeWindowMaker extends Observable implements Observer {
 	public void onTimeWindowFinished(TimeWindow timeWindow) {
 		deleteObserver(timeWindow);
 		Log.i("TimeWindowMaker", "Deleting time window: " + timeWindow.getStartTime());
+		timeWindow.logContents();
 		FeatureSet fs = new FeatureSet(timeWindow);
 		fs.computeFeatures();
-		// extract features
+		//fs.logContents();
+		
+		
+		
 		// write to csv
 	}
 }
