@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
 	private SensorLogger mSensorLogger;
 	private UIUpdater mUIUpdater;
 		
-	// Handles messages from the logger to update the UI
+	// Handles messages from the ui updater to update the UI
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {

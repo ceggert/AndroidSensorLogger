@@ -38,13 +38,13 @@ public class TimeWindow extends HashMap<SensorID, TimeSeries> implements Observe
 		}
 		else {
 			// if the ts is not in the hash table, make a new one and add it
-			if (this.get(sensorID.ordinal()) == null) {
+			if (this.get(sensorID) == null) {
 				TimeSeries timeSeries = new TimeSeries();
 				timeSeries.add(dataPoint);
 				this.put(sensorID, timeSeries);
 			}
 			else {
-				this.get(sensorID.ordinal()).add(dataPoint);
+				this.get(sensorID).add(dataPoint);
 			}
 		}
 	}

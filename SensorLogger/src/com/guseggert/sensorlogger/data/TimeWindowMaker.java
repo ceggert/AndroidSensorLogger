@@ -7,6 +7,8 @@ import java.util.Observer;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.guseggert.sensorlogger.SensorID;
@@ -17,12 +19,34 @@ import com.guseggert.sensorlogger.feature.FeatureSet;
 // When a time window is full, it calls onTimeWindowFinished(), which
 // removes the time window as an observer and then processes the data.
 public class TimeWindowMaker extends Observable implements Observer {
+	public final static int MSG_FEATURE_EXTRACTION_COMPLETE = 0; // message code for thread communication
+	public final static int MSG_FEATURE_EXTRACTION_FAILURE = 1;
+	
 	private long mTimeWindowLength = 5000000000l; // nanoseconds
 	private float mTimeWindowOverlap = 0.5f; // overlap of time windows
 	private TimeWindow mLastTimeWindow;
 	
 	public TimeWindowMaker() {
 	}
+	
+	// receive notification when the FeatureSet thread has finished (features have been extracted)
+	private Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case MSG_FEATURE_EXTRACTION_COMPLETE:
+				FeatureSet fs = (FeatureSet)msg.obj;
+				//Log.v("TimeWindowMaker", "Feature extraction complete.");
+				//fs.logContents();
+				System.gc();
+				break;
+			case MSG_FEATURE_EXTRACTION_FAILURE:
+			default:
+				Log.e("TimeWindowMaker", "handleMessage received an invalid msg.what");
+				break;
+			}
+		}
+	};
 	
 	@Override
 	public void update(Observable observable, Object data) {
@@ -105,11 +129,10 @@ public class TimeWindowMaker extends Observable implements Observer {
 	public void onTimeWindowFinished(TimeWindow timeWindow) {
 		deleteObserver(timeWindow);
 		Log.i("TimeWindowMaker", "Deleting time window: " + timeWindow.getStartTime());
-		timeWindow.logContents();
-		FeatureSet fs = new FeatureSet(timeWindow);
-		fs.computeFeatures();
-		//fs.logContents();
-		
+		//timeWindow.logContents();
+		Thread featureSetThread = new Thread(new FeatureSet(timeWindow, mHandler));
+		featureSetThread.run();
+		FeatureSet fs = new FeatureSet(timeWindow, mHandler);
 		
 		
 		// write to csv
