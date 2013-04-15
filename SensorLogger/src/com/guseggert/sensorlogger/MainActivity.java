@@ -47,6 +47,7 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	@SuppressLint("HandlerLeak")
 	private void init() {
 		initSensorLogger();
 		mUIUpdater = new UIUpdater(this);

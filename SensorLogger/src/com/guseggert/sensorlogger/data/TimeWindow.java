@@ -8,7 +8,6 @@ import java.util.Observer;
 import android.util.Log;
 
 import com.guseggert.sensorlogger.SensorID;
-import com.guseggert.sensorlogger.feature.FeatureSet;
 
 public class TimeWindow extends HashMap<SensorID, TimeSeries> implements Observer {
 	private static final long serialVersionUID = 4834473217118341864L;

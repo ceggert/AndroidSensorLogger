@@ -1,19 +1,13 @@
 package com.guseggert.sensorlogger.data;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 import com.guseggert.sensorlogger.SensorID;
-import com.guseggert.sensorlogger.feature.FeatureID;
-import com.guseggert.sensorlogger.feature.FeatureSet;
 
 // Each time window observes TimeWindowMaker for new data points.
 // When a time window is full, it calls onTimeWindowFinished(), which
@@ -25,28 +19,10 @@ public class TimeWindowMaker extends Observable implements Observer {
 	private long mTimeWindowLength = 5000000000l; // nanoseconds
 	private float mTimeWindowOverlap = 0.5f; // overlap of time windows
 	private TimeWindow mLastTimeWindow;
+	private CSVWriter mCSVWriter = new CSVWriter();
 	
 	public TimeWindowMaker() {
 	}
-	
-	// receive notification when the FeatureSet thread has finished (features have been extracted)
-	private Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case MSG_FEATURE_EXTRACTION_COMPLETE:
-				FeatureSet fs = (FeatureSet)msg.obj;
-				//Log.v("TimeWindowMaker", "Feature extraction complete.");
-				//fs.logContents();
-				System.gc();
-				break;
-			case MSG_FEATURE_EXTRACTION_FAILURE:
-			default:
-				Log.e("TimeWindowMaker", "handleMessage received an invalid msg.what");
-				break;
-			}
-		}
-	};
 	
 	@Override
 	public void update(Observable observable, Object data) {
@@ -70,7 +46,6 @@ public class TimeWindowMaker extends Observable implements Observer {
 		if (mLastTimeWindow == null || boundaryReached(time)) {
 			newTimeWindow(time);
 		}
-
 		switch (type) {
 		case Sensor.TYPE_ACCELEROMETER:
 			this.setChanged();
@@ -115,8 +90,6 @@ public class TimeWindowMaker extends Observable implements Observer {
 		default:
 			throw new IllegalArgumentException("addPoint received an invalid sensor type");
 		}
-		// mCurrentTimeWindow.addDataPoint(values, type, time);
-		// Log.v("TimeWindowMaker", "Data point added: " + type + " " + time);
 	}
 	
 	// checks if we need to create a new time window
@@ -129,12 +102,9 @@ public class TimeWindowMaker extends Observable implements Observer {
 	public void onTimeWindowFinished(TimeWindow timeWindow) {
 		deleteObserver(timeWindow);
 		Log.i("TimeWindowMaker", "Deleting time window: " + timeWindow.getStartTime());
-		//timeWindow.logContents();
-		Thread featureSetThread = new Thread(new FeatureSet(timeWindow, mHandler));
-		featureSetThread.run();
-		FeatureSet fs = new FeatureSet(timeWindow, mHandler);
-		
+		//timeWindow.logContents();		
 		
 		// write to csv
+		
 	}
 }
