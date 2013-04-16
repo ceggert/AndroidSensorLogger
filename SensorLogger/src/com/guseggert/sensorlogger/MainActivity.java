@@ -15,9 +15,11 @@ import android.view.Menu;
 
 public class MainActivity extends Activity {
 	public final static int MSG_SENSOR_UPDATE = 0;
+	public final static int MSG_SL_HANDLER = 1;
 	private SensorManager mSensorManager;
 	private SensorLogger mSensorLogger;
 	private UIUpdater mUIUpdater;
+	private Handler mSensorLoggerHandler;
 		
 	// Handles messages from the ui updater to update the UI
 	private Handler mHandler = new Handler() {
@@ -27,6 +29,8 @@ public class MainActivity extends Activity {
 			case MSG_SENSOR_UPDATE:
 				mUIUpdater.updateValues((float[])msg.obj, msg.arg1);
 				break;
+			case MSG_SL_HANDLER:
+				mSensorLoggerHandler = (Handler)msg.obj;
 			default:
 				Log.e("MainActivity", "handleMessage received an invalid msg.what");
 				break;

@@ -3,6 +3,7 @@ package com.guseggert.sensorlogger;
 import android.hardware.Sensor;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -61,8 +62,21 @@ public class UIUpdater {
 				ArrayAdapter.createFromResource(mActivity, R.array.activities_array, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
+		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				mSensorLogger.updateActivity(arg0.getSelectedItem().toString());
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+			
+		});
+		mSensorLogger.updateActivity(spinner.getSelectedItem().toString());
 	}
-	
+		
 	private void initStartButton() {
 		mButtonStart = (Button)mActivity.findViewById(R.id.btn_start);
 		mButtonStart.setOnClickListener(new View.OnClickListener() {
