@@ -13,6 +13,9 @@ import android.os.Message;
 import android.util.Log;
 import android.util.SparseArray;
 
+// Each new sensor value is written to the buffer, overwriting its previous value.
+// The buffer is read from approx. every 50 ms, and the values are written to CSV.
+// This ensures consistent time intervals in the dataset.
 public class SensorLogger implements SensorEventListener, Runnable {
 	public static enum Command { STOP, START };
 	
@@ -27,16 +30,7 @@ public class SensorLogger implements SensorEventListener, Runnable {
 	private long mLastBufferWrite = 0;
 	private long mBufferWriteInterval = 50000000L; // in nanoseconds
 	private String mActivity;
-	
-	// Handles messages from the main activity (change in selected activity)
-	private Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			
-		}
-	};
-
-	
+		
 	public static SensorLogger getInstance(SensorManager sensorManager, Handler uiHandler) {
 		return singleton==null ? new SensorLogger(sensorManager, uiHandler) : singleton;
 	}
@@ -113,16 +107,14 @@ public class SensorLogger implements SensorEventListener, Runnable {
 	}
 	
 	private void writeBuffer(SensorEvent event) {
-		Log.v("WriteBuffer", "Writing buffer...");
 		if (mLastBufferWrite == 0) {
 			mLastBufferWrite = event.timestamp;
-			updateUI(event);
 		}
 		else if (event.timestamp - mLastBufferWrite >= mBufferWriteInterval) {
 			mLastBufferWrite += mBufferWriteInterval;
 			mWriter.writeLine(mBuffer, mLastBufferWrite, mActivity);
-			updateUI(event);
 		}
+		updateUI(event);
 	}
 	
 	private void updateUI(SensorEvent event) {
