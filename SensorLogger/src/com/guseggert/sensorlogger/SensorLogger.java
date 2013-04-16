@@ -17,8 +17,6 @@ import android.util.SparseArray;
 // The buffer is read from approx. every 50 ms, and the values are written to CSV.
 // This ensures consistent time intervals in the dataset.
 public class SensorLogger implements SensorEventListener, Runnable {
-	public static enum Command { STOP, START };
-	
 	private SensorManager mSensorManager;
 	private SparseArray<Sensor> mSensors = new SparseArray<Sensor>();
 	private Thread mThread;
