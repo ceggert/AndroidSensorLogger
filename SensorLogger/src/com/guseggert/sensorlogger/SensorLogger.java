@@ -1,7 +1,5 @@
 package com.guseggert.sensorlogger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import android.hardware.Sensor;
@@ -21,7 +19,7 @@ public class SensorLogger implements SensorEventListener, Runnable {
 	private SparseArray<Sensor> mSensors = new SparseArray<Sensor>();
 	private Thread mThread;
 	private DataWriter mWriter;
-	private final int mDelay = SensorManager.SENSOR_DELAY_UI;
+	private final int mDelay = SensorManager.SENSOR_DELAY_FASTEST;
 	private Handler mUIHandler = null;
 	private static SensorLogger singleton = null;
 	private HashMap<SensorID, Float> mBuffer = new HashMap<SensorID, Float>();
@@ -62,47 +60,19 @@ public class SensorLogger implements SensorEventListener, Runnable {
 			writeBuffer(event);
 			updateBuffer(event);
 		}
+		if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) 
+			Log.v("SensorLogger", "Time: " + event.timestamp);
 	}
 	
 	// updates the values in the buffer on the new sensor event
 	private void updateBuffer(SensorEvent event) {
 		int i = 0;
-		for (SensorID sensorID : getSensorIDs(event.sensor.getType())) {
+		for (SensorID sensorID : SensorID.getSensorIDs(event.sensor.getType())) {
 			mBuffer.put(sensorID, event.values[i]);
 			i++;
 		}
 	}
 	
-	public static ArrayList<SensorID> getSensorIDs(int sensorType) {
-		switch (sensorType) {
-		case Sensor.TYPE_ACCELEROMETER:
-			return new ArrayList<SensorID>(Arrays.asList(SensorID.ACC_X, SensorID.ACC_Y, SensorID.ACC_Z));
-		case Sensor.TYPE_GYROSCOPE:
-			return new ArrayList<SensorID>(Arrays.asList(SensorID.GYRO_X, SensorID.GYRO_Y, SensorID.GYRO_Z));
-		case Sensor.TYPE_GRAVITY:
-			return new ArrayList<SensorID>(Arrays.asList(SensorID.GRAV_X, SensorID.GRAV_Y, SensorID.GRAV_Z));
-		case Sensor.TYPE_LINEAR_ACCELERATION:
-			return new ArrayList<SensorID>(Arrays.asList(SensorID.LINACC_X, SensorID.LINACC_Y, SensorID.LINACC_Z));
-		case Sensor.TYPE_ROTATION_VECTOR:
-			return new ArrayList<SensorID>(Arrays.asList(SensorID.ROTVEC_X, SensorID.ROTVEC_Y, SensorID.ROTVEC_Z));
-		default:
-			throw new IllegalArgumentException("Invalid sensor type in getSensorIDs()");
-		}
-	}
-	
-	public static ArrayList<SensorID> getSensorIDs(int[] sensorTypes) {
-		ArrayList<SensorID> sensorIDs = new ArrayList<SensorID>();
-		for (int sensorType : sensorTypes)
-			sensorIDs.addAll(getSensorIDs(sensorType));
-		return sensorIDs;
-	}
-	
-	private ArrayList<SensorID> getSensorIDs(SparseArray<Sensor> sensors) {
-		ArrayList<SensorID> sensorIDs = new ArrayList<SensorID>();
-		for (int i = 0; i < sensors.size(); i++)
-			sensorIDs.addAll(getSensorIDs(sensors.valueAt(i).getType()));
-		return sensorIDs;
-	}
 	
 	private void writeBuffer(SensorEvent event) {
 		if (mLastBufferWrite == 0) {
@@ -154,7 +124,7 @@ public class SensorLogger implements SensorEventListener, Runnable {
 	
 	// initialize buffer to all zeros
 	private void initBuffer() {
-		for (SensorID sensorID : getSensorIDs(mSensors))
+		for (SensorID sensorID : SensorID.getSensorIDs(mSensors))
 			mBuffer.put(sensorID, 0f);
 	}
 	

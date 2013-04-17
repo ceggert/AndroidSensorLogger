@@ -26,7 +26,7 @@ public class DataWriter {
 	
 	private void buildSensorIDs(SparseArray<Sensor> sensors) {
 		for (int i = 0; i < sensors.size(); i++)
-			mSensorIDs.addAll(SensorLogger.getSensorIDs(sensors.valueAt(i).getType()));
+			mSensorIDs.addAll(SensorID.getSensorIDs(sensors.valueAt(i).getType()));
 	}
 	
 	private void writeFirstLine() {
