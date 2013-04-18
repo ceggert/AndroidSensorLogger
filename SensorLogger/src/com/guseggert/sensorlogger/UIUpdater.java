@@ -3,11 +3,13 @@ package com.guseggert.sensorlogger;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,6 +33,7 @@ public class UIUpdater {
 	private TextView mTextRotVecY;
 	private TextView mTextRotVecZ;
 	private Button mButtonStart;
+	private Chronometer mChronometer;
 	
 	public UIUpdater(final MainActivity act) {
 		mActivity = act;
@@ -38,6 +41,12 @@ public class UIUpdater {
 		initUIObjs();
 		initActivitySpinner();
 		initStartButton();
+		initChronometer();
+	}
+	
+	private void initChronometer() {
+		mChronometer = (Chronometer)mActivity.findViewById(R.id.chronometer1);
+		
 	}
 	
 	private void initUIObjs() {
@@ -91,12 +100,24 @@ public class UIUpdater {
 	private void onStartButtonClick() {
 		if (mButtonStart.getText().equals("Start")) {
 			mButtonStart.setText("Stop");
+			startChronometer();
 			mSensorLogger.start();
 		}
 		else {
 			mButtonStart.setText("Start");
+			stopChronometer();
 			mSensorLogger.stop();
 		}
+	}
+	
+	private void startChronometer() {
+		mChronometer.setBase(SystemClock.elapsedRealtime());
+		mChronometer.start();
+	}
+	
+	private void stopChronometer() {
+		mChronometer.stop();
+		
 	}
 	
 	public void updateValues(HashMap<SensorID, Float> data) {

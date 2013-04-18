@@ -15,5 +15,6 @@
         <item>Running</item>
     </string-array>
     <string name="btn_start">Start</string>
+    <string name="time_default">00:00</string>
 
 </resources>
