@@ -45,6 +45,7 @@ public class DataWriter {
 			FileWriter fileWriter = new FileWriter(new File(Environment.getExternalStorageDirectory(), FILENAME), true); 
 			BufferedWriter writer = new BufferedWriter(fileWriter);
 			if (!mFirstLine) writer.newLine();
+			else mFirstLine = false;
 			writer.write(string);
 			writer.close();
 		} catch (Exception e) { e.printStackTrace(); }
