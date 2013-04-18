@@ -1,6 +1,8 @@
 package com.guseggert.sensorlogger;
 
-import android.hardware.Sensor;
+import java.util.HashMap;
+import java.util.Map;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -97,36 +99,58 @@ public class UIUpdater {
 		}
 	}
 	
-	public void updateValues(final float[] values, final int type) {
-		switch (type) {
-		case Sensor.TYPE_ACCELEROMETER:
-			mTextAccX.setText(Float.toString(values[0]));
-			mTextAccY.setText(Float.toString(values[1]));
-			mTextAccZ.setText(Float.toString(values[2]));
-			break;
-		case Sensor.TYPE_GRAVITY:
-			mTextGravX.setText(Float.toString(values[0]));
-			mTextGravY.setText(Float.toString(values[1]));
-			mTextGravZ.setText(Float.toString(values[2]));
-			break;
-		case Sensor.TYPE_GYROSCOPE:
-			mTextGyroX.setText(Float.toString(values[0]));
-			mTextGyroY.setText(Float.toString(values[1]));
-			mTextGyroZ.setText(Float.toString(values[2]));
-			break;
-		case Sensor.TYPE_LINEAR_ACCELERATION:
-			mTextLinAccX.setText(Float.toString(values[0]));
-			mTextLinAccY.setText(Float.toString(values[1]));
-			mTextLinAccZ.setText(Float.toString(values[2]));
-			break;
-		case Sensor.TYPE_ROTATION_VECTOR:
-			mTextRotVecX.setText(Float.toString(values[0]));
-			mTextRotVecY.setText(Float.toString(values[1]));
-			mTextRotVecZ.setText(Float.toString(values[2]));
-			break;
-		default:
-			Log.e("MainActivity", "MainActivity.updateValues() received an invalid sensor type");
-			break;
+	public void updateValues(HashMap<SensorID, Float> data) {
+		for (Map.Entry<SensorID, Float> entry : data.entrySet()) {
+			switch (entry.getKey()) {
+			case ACC_X:
+				mTextAccX.setText(Float.toString(entry.getValue()));
+				break;
+			case ACC_Y:
+				mTextAccY.setText(Float.toString(entry.getValue()));
+				break;
+			case ACC_Z:
+				mTextAccZ.setText(Float.toString(entry.getValue()));
+				break;
+			case GRAV_X:
+				mTextGravX.setText(Float.toString(entry.getValue()));
+				break;
+			case GRAV_Y:
+				mTextGravY.setText(Float.toString(entry.getValue()));
+				break;
+			case GRAV_Z:
+				mTextGravZ.setText(Float.toString(entry.getValue()));
+				break;
+			case GYRO_X:
+				mTextGyroX.setText(Float.toString(entry.getValue()));
+				break;
+			case GYRO_Y:
+				mTextGyroY.setText(Float.toString(entry.getValue()));
+				break;
+			case GYRO_Z:
+				mTextGyroZ.setText(Float.toString(entry.getValue()));
+				break;
+			case LINACC_X:
+				mTextLinAccX.setText(Float.toString(entry.getValue()));
+				break;
+			case LINACC_Y:
+				mTextLinAccY.setText(Float.toString(entry.getValue()));
+				break;
+			case LINACC_Z:
+				mTextLinAccZ.setText(Float.toString(entry.getValue()));
+				break;
+			case ROTVEC_X:
+				mTextRotVecX.setText(Float.toString(entry.getValue()));
+				break;
+			case ROTVEC_Y:
+				mTextRotVecY.setText(Float.toString(entry.getValue()));
+				break;
+			case ROTVEC_Z:
+				mTextRotVecZ.setText(Float.toString(entry.getValue()));
+				break;
+			default:
+				Log.e("MainActivity", "MainActivity.updateValues() received an invalid sensor type");
+				break;
+			}
 		}
 	}
 

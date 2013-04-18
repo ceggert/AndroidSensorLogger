@@ -25,6 +25,8 @@ public class SensorLogger implements SensorEventListener, Runnable {
 	private HashMap<SensorID, Float> mBuffer = new HashMap<SensorID, Float>();
 	private long mLastBufferWrite = 0;
 	private long mBufferWriteInterval = 50000000L; // in nanoseconds
+	private long mUIUpdateInterval = 500L; // in milliseconds
+	private long mLastUIUpdate = 0;
 	private String mActivity;
 		
 	public static SensorLogger getInstance(SensorManager sensorManager, Handler uiHandler) {
@@ -60,8 +62,6 @@ public class SensorLogger implements SensorEventListener, Runnable {
 			writeBuffer(event);
 			updateBuffer(event);
 		}
-		if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) 
-			Log.v("SensorLogger", "Time: " + event.timestamp);
 	}
 	
 	// updates the values in the buffer on the new sensor event
@@ -75,19 +75,23 @@ public class SensorLogger implements SensorEventListener, Runnable {
 	
 	
 	private void writeBuffer(SensorEvent event) {
+		updateUI(event);
 		if (mLastBufferWrite == 0) {
 			mLastBufferWrite = event.timestamp;
 		}
 		else if (event.timestamp - mLastBufferWrite >= mBufferWriteInterval) {
-			mLastBufferWrite += mBufferWriteInterval;
+			mLastBufferWrite = event.timestamp;
 			mWriter.writeLine(mBuffer, mLastBufferWrite, mActivity);
 		}
-		updateUI(event);
 	}
 	
 	private void updateUI(SensorEvent event) {
-		Message msg = Message.obtain(mUIHandler, MainActivity.MSG_SENSOR_UPDATE, event.sensor.getType(), 0, event.values);
-		msg.sendToTarget();
+		long curTime = System.currentTimeMillis();
+		if (curTime - mLastUIUpdate >= mUIUpdateInterval) {
+			Message msg = Message.obtain(mUIHandler, MainActivity.MSG_SENSOR_UPDATE, 0, 0, mBuffer);
+			msg.sendToTarget();
+			mLastUIUpdate = curTime;
+		}
 	}
 	
 	@Override

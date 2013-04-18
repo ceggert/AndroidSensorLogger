@@ -1,5 +1,7 @@
 package com.guseggert.sensorlogger;
 
+import java.util.HashMap;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +9,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.WindowManager;
@@ -20,15 +21,15 @@ public class MainActivity extends Activity {
 	private SensorManager mSensorManager;
 	private SensorLogger mSensorLogger;
 	private UIUpdater mUIUpdater;
-	private WakeLock mWakeLock;
 		
 	// Handles messages from the ui updater to update the UI
 	private Handler mHandler = new Handler() {
+		@SuppressWarnings("unchecked")
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case MSG_SENSOR_UPDATE:
-				mUIUpdater.updateValues((float[])msg.obj, msg.arg1);
+				mUIUpdater.updateValues((HashMap<SensorID, Float>)msg.obj);
 				break;
 			default:
 				Log.e("MainActivity", "handleMessage received an invalid msg.what");
