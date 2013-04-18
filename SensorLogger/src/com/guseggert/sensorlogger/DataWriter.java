@@ -3,7 +3,9 @@ package com.guseggert.sensorlogger;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import android.hardware.Sensor;
@@ -14,8 +16,7 @@ import android.util.SparseArray;
 import com.google.common.base.Joiner;
 
 public class DataWriter {
-//	final String FILENAME = "/storage/sdcard0/sensorlogger/" + Long.toString(System.currentTimeMillis()) + ".csv";
-	final String FILENAME = Long.toString(System.currentTimeMillis()) + ".csv";
+	final String FILENAME = generateFilename();
 	boolean mFirstLine = true;
 	ArrayList<SensorID> mSensorIDs = new ArrayList<SensorID>();
 	
@@ -59,5 +60,11 @@ public class DataWriter {
 		strings.add(Long.toString(time));
 		strings.add(activity);
 		writeLine(Joiner.on(",").join(strings));
+	}
+	
+	private String generateFilename() {
+		Date now = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss");
+		return formatter.format(now) + ".csv";
 	}
 }
