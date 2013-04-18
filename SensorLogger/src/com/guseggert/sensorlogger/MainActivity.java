@@ -7,10 +7,10 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.Menu;
+import android.view.WindowManager;
 
 // suppresses the leak warnings since there are no long delayed messages
 @SuppressLint("HandlerLeak")
@@ -54,25 +54,7 @@ public class MainActivity extends Activity {
 	private void init() {
 		initSensorLogger();
 		mUIUpdater = new UIUpdater(this);
-	}
-	
-	@SuppressWarnings("deprecation")
-	private void initWakeLock() {
-		PowerManager powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
-		mWakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "SensorLogger Lock");
-		mWakeLock.acquire();
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		initWakeLock();
-	}
-	
-	@Override 
-	protected void onPause() {
-		super.onPause();
-		mWakeLock.release();
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // keep the screen on
 	}
 	
 	private void initSensorLogger() {
