@@ -8,6 +8,7 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="16" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:allowBackup="true"
@@ -15,6 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
+            android:screenOrientation="landscape"
             android:name="com.guseggert.sensorlogger.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>

@@ -7,6 +7,8 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.Menu;
 
@@ -18,6 +20,7 @@ public class MainActivity extends Activity {
 	private SensorManager mSensorManager;
 	private SensorLogger mSensorLogger;
 	private UIUpdater mUIUpdater;
+	private WakeLock mWakeLock;
 		
 	// Handles messages from the ui updater to update the UI
 	private Handler mHandler = new Handler() {
@@ -51,6 +54,25 @@ public class MainActivity extends Activity {
 	private void init() {
 		initSensorLogger();
 		mUIUpdater = new UIUpdater(this);
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void initWakeLock() {
+		PowerManager powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
+		mWakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "SensorLogger Lock");
+		mWakeLock.acquire();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		initWakeLock();
+	}
+	
+	@Override 
+	protected void onPause() {
+		super.onPause();
+		mWakeLock.release();
 	}
 	
 	private void initSensorLogger() {
